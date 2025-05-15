@@ -13,7 +13,7 @@ export function updateGroupNav(groups) {
         const label = document.createElement("h3");
         label.textContent = group.name;
 
-        label.addEventListener("click", () => {
+        entry.addEventListener("click", () => {
             setCurrentGroup(group.id);
             updateGroupTasks(groups, group.id);
         });

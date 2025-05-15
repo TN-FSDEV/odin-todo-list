@@ -1,5 +1,5 @@
 import { Group, groups } from "../initial.js";
-import { signalDOM } from "./data-station.js";
+import { updateState } from "./data-station.js";
 
 function groupDialogHTML(dialog) {
     dialog.innerHTML = `
@@ -17,7 +17,7 @@ function groupDialogHTML(dialog) {
 }
 
 function submitGroupDialog(dialog, form) {
-    form.addEventListener("submit", (event) => {    
+    form.addEventListener("submit", (event) => {
         event.preventDefault();
 
         const formData = new FormData(form);
@@ -36,7 +36,7 @@ function closeGroupDialog(groups, dialog) {
                 const newGroup = new Group(result.name);
                 groups.push(newGroup);
 
-                signalDOM(groups);
+                updateState(groups);
             }
         } catch (e) {
             // Ignore cancel or invalid returnValue (e.g., user clicked X)
@@ -46,7 +46,7 @@ function closeGroupDialog(groups, dialog) {
 }
 
 function confirmDeleteGroupDialog(dialog, group) {
-    dialog.innerHTML =`
+    dialog.innerHTML = `
         <form method="dialog">
           <h2>Confirm Delete Group?</h2>
           <div id="dialog-selection">
@@ -64,9 +64,9 @@ function confirmDeleteGroupDialog(dialog, group) {
             if (index !== -1) {
                 groups.splice(index, 1);
             }
-            signalDOM(groups);
+            updateState(groups);
         }
-    
+
         dialog.remove();
     });
 }

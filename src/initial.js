@@ -1,5 +1,5 @@
 import { signalDOM } from "./components/data-station.js";
-
+import { updateTopUI } from "./components/update-top-UI.js";
 //new import
 import { createGroupDialog } from "./components/group-dialog.js";
 import { createTaskDialog } from "./components/task-dialog.js";
@@ -28,17 +28,27 @@ class Task {
 function initialize() {
     groups.length = 0;
 
-    defaultMainGroup();
+    const saved = localStorage.getItem("todo-groups");
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        for (const g of parsed) {
+            const group = new Group(g.name);
+            g.tasks.forEach(t => group.addToGroup(new Task(t.title, t.desc, t.date)));
+            groups.push(group);
+        }
+    } else {
+        defaultMainGroup();
+    }
 
     signalDOM(groups);
 
     setupMenu();
 
-    // setInterval(() => {
-    //     if (document.visibilityState === "visible") {
-    //         updateTopUI(groups);
-    //     }
-    // }, 60 * 1000);
+    setInterval(() => {
+        if (document.visibilityState === "visible") {
+            updateTopUI(groups);
+        }
+    }, 60 * 1000);
     console.log("initializing.... completed")
 }
 

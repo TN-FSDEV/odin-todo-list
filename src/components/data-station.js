@@ -3,7 +3,16 @@ import { updateGroupTasks } from "./update-group-tasks.js";
 import { updateTopUI } from "./update-top-UI.js";
 import { getCurrentGroup, setupMenu } from "../initial.js";
 
-export function signalDOM(groups) {
+function updateState(groups) {
+    saveToLocal(groups);
+    signalDOM(groups);
+}
+
+function saveToLocal(groups) {
+    localStorage.setItem("todo-groups", JSON.stringify(groups));
+}
+
+function signalDOM(groups) {
     resetHTML();
     setupMenu();
     updateGroupNav(groups);
@@ -32,3 +41,5 @@ function resetHTML() {
     </div>
     `
 }
+
+export { signalDOM, updateState };

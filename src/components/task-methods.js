@@ -1,5 +1,5 @@
 import { Task, groups } from "../initial.js";
-import { signalDOM } from "./data-station.js";
+import { updateState } from "./data-station.js";
 
 function taskDialogHTML(dialog, action) {
     const taskTitle = (action === "create") ? "New Task" : "Edit Task";
@@ -10,7 +10,7 @@ function taskDialogHTML(dialog, action) {
           <label for="title">Title</label>
           <input id="title" type="text" name="title" required />
           <label for="desc">Description</label>
-          <textarea id="desc" name="desc" rows="3"></textarea>
+          <textarea id="desc" name="desc" rows="2"></textarea>
           <label for="date">Date</label>
           <input id="date" type="date" name="date" required />
           <label for="group">Group</label>
@@ -87,7 +87,7 @@ function signalNewTaskCreate(groups, dialog) {
                 const task = new Task(result.title, result.desc, result.date);
                 selectedGroup.addToGroup(task);
 
-                signalDOM(groups);
+                updateState(groups);
             }
         } catch (e) {
             // Ignore cancel or invalid returnValue (e.g., user clicked X)
@@ -115,7 +115,7 @@ function signalNewTaskChanges(task, groups, dialog) {
                     selectedGroup.addToGroup(task);
                 }
 
-                signalDOM(groups);
+                updateState(groups);
             }
         } catch (e) {
             // User cancelled or closed dialog
@@ -142,7 +142,7 @@ function confirmDeleteTaskDialog(dialog, task, group) {
             if (index !== -1) {
                 group.tasks.splice(index, 1);
             }
-            signalDOM(groups);
+            updateState(groups);
         }
 
         dialog.remove();
